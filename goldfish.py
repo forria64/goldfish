@@ -2,9 +2,6 @@ import os
 import json
 import random
 from PIL import Image, ImageChops
-import threading
-from concurrent.futures import ThreadPoolExecutor
-import webbrowser
 
 def read_parameters():
     with open("parameters.json", "r") as file:
@@ -103,17 +100,17 @@ def generate_images(num_images):
     body_colors = parameters["body_color"]
     accent_colors = parameters["accent_color"]
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        for i in range(1, num_images + 1):
-            background_color = random.choice(background_colors)
-            body_color = random.choice(body_colors)
-            accent_color = random.choice(accent_colors)
-            body_type = random.randint(1, 34)
-            eyes_type = random.randint(1, 8)
-            mouth_type = random.randint(1, 22)
-            executor.submit(generate_image, i, background_color, body_type, body_color, accent_color, eyes_type, mouth_type)
+    for i in range(1, num_images + 1):
+        background_color = random.choice(background_colors)
+        body_color = random.choice(body_colors)
+        accent_color = random.choice(accent_colors)
+        body_type = random.randint(1, 34)
+        eyes_type = random.randint(1, 8)
+        mouth_type = random.randint(1, 22)
+        generate_image(i, background_color, body_type, body_color, accent_color, eyes_type, mouth_type)
 
     print("Generation complete.")
+
 
 if __name__ == "__main__":
     print("""
